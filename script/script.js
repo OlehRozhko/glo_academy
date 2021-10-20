@@ -27,11 +27,10 @@ console.log("addExpenses: ", addExpenses);
 deposit = confirm("Чи є у вас кредит у банку?");
 console.log("deposit: ", deposit);
 
-var expenses1, expenses2, amount1, amount2;
-expenses1 = prompt("Введіть обов'явозкову статтю витрат?");
-amount1 = prompt("Скільки це буде коштувати?");
-expenses2 = prompt("Введіть обов'явозкову статтю витрат?");
-amount2 = prompt("Скільки це буде коштувати?");
+var expenses1 = prompt("Введіть обов'явозкову статтю витрат?"),
+  amount1 = prompt("Скільки це буде коштувати?"),
+  expenses2 = prompt("Введіть обов'явозкову статтю витрат?"),
+  amount2 = prompt("Скільки це буде коштувати?");
 
 var budgetMonth = money - amount1 - amount2;
 console.log("budgetMonth: ", budgetMonth);
