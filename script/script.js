@@ -32,7 +32,7 @@ var expenses1 = prompt("Введіть обов'явозкову статтю в
   expenses2 = prompt("Введіть обов'явозкову статтю витрат?"),
   amount2 = prompt("Скільки це буде коштувати?");
 
-var budgetMonth = money - amount1 - amount2;
+var budgetMonth = parseFloat(money) - parseFloat(amount1) - parseFloat(amount2);
 console.log("budgetMonth: ", budgetMonth);
 
 var getTarget = Math.ceil(mission / budgetMonth);
