@@ -1,48 +1,67 @@
 "use strict";
-
 /* jshint node: true */
 
-var money = 500; // Дохід за місяць
-var income = "Sport"; //Додатковий дохід
-var addExpenses = "Fitnes , Girls , Beer"; // Додаткові витрати
-var deposit = true;
-var mission = 78958; // Сума для накопичення
-var period = 12; // К-сть місяців
+let isNumber = (n) => {
+  console.log("n: ", n);
+  console.log(parseFloat(n));
+  console.log(isFinite(n));
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
 
+var money, // Дохід за місяць
+  income = "Sport", //Додатковий дохід
+  addExpenses = "", // Додаткові витрати
+  deposit = true,
+  mission = 10000, // Сума для накопичення
+  period = 4; // К-сть місяців
+
+do {
+  money = prompt("Ваш місячний дохід?");
+} while (!isNumber(money));
+
+addExpenses = prompt("Перечісліть додаткові витрати?", "Fitnes , Girls , Beer");
+deposit = confirm("Чи є у вас кредит у банку?");
 var showTypeOf = function (data) {
-  console.log(data, typeof data);
+  console.log(typeof data);
 };
 showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);
 
-var toLower = addExpenses.toLowerCase(); // Змінну addExpenses до нижнього регістру й зберігаємо в змінну toLower
-var array = toLower.split(" , "); // Змінну toLower розбиваємо на масив
-console.log(array);
+let expenses = [];
 
-money = +prompt("Ваш місячний дохід?", "10000");
-addExpenses = prompt("Перечісліть додаткові витрати?", "Fitnes , Girls , Beer");
-deposit = confirm("Чи є у вас кредит у банку?");
+console.log(addExpenses.toLowerCase().split(" , "));
 
-var expenses1 = prompt("Введіть обов'явозкову статтю витрат?", "Курси"),
-  amount1 = +prompt("Скільки це буде коштувати?", "4000"),
-  expenses2 = prompt("Введіть обов'явозкову статтю витрат?", "Водіння"),
-  amount2 = +prompt("Скільки це буде коштувати?", "1500");
+let getExpensesMonth = function () {
+  let sum = 0;
 
-var getExpensesMonth = function () {
-  return amount1 + amount2;
+  for (let i = 0; i < 4; i++) {
+    expenses[i] = prompt("Введіть обов'явозкову статтю витрат?");
+
+    sum += +prompt("Скільки це буде коштувати?");
+  }
+  console.log(sum);
+  return sum;
 };
-console.log(getExpensesMonth());
+console.log(expenses.toLowerCase);
+let expensesAmount = getExpensesMonth();
+
+console.log("Місячні витрати: " + expensesAmount);
 
 var getAccumulatedMonth = function () {
-  return money - getExpensesMonth();
+  return money - expensesAmount;
 };
 var accumulatedMonth = getAccumulatedMonth();
 
-var getTargetMonth = function () {
-  return Math.ceil(mission / accumulatedMonth);
+var getTargetMonth = function (myMiss, budgetMonth) {
+  return Math.ceil(myMiss / budgetMonth);
 };
-console.log(getTargetMonth());
+
+var targetMonth = getTargetMonth(mission, accumulatedMonth);
+
+targetMonth > 0
+  ? console.log("Ціла буде досягнути за " + targetMonth + " місяців")
+  : console.log("Ціль не буде досягнута!");
 
 var budgetDay = Math.floor(accumulatedMonth / 30);
 console.log("budgetDay: ", budgetDay);
