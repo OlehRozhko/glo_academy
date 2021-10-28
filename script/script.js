@@ -5,6 +5,10 @@ const isNumber = (n) => {
   return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
+const isString = (s) => {
+  return !String(s) || s === " " || s === null || isNumber(s) || !s.trim();
+};
+
 var money,
   start = () => {
     do {
@@ -20,6 +24,8 @@ let appData = {
   expenses: {}, // список обов'язковий витрат
   addExpenses: [], // рядок з перечислиними додатковими витратами
   deposit: false, // наявність кредиту в банку
+  percentDeposit: 0,
+  moneyDeposit: 0,
   mission: 50000, // сума для накопичення
   period: 5, // термін накопичення
   budget: money, // дохід за місяць
@@ -27,14 +33,40 @@ let appData = {
   budgetMonth: 0, // бюджет на місяць
   expensesMonth: 0, // місячні витрати
   asking: function () {
-    appData.deposit = confirm("Чи є у вас кредит у банку?");
-    for (let i = 0; i < 4; i++) {
-      let first = prompt("Введіть обов'явозкову статтю витрат?");
-      let second = +prompt("Скільки це буде коштувати?");
-      appData.expenses[first] = second;
+    if (confirm("Чи є у вас додатковий дохід?")) {
+      let itemIncome, cashIncome;
+      do {
+        itemIncome = prompt("Який у вас є додатковий заробіток?", "Доставка");
+      } while (isString(itemIncome));
+
+      do {
+        cashIncome = prompt("Скільки отримуєте на місяць з цього?", 2000);
+      } while (!isNumber(cashIncome));
+      appData.income[itemIncome] = cashIncome;
     }
-    appData.addExpenses = prompt("Перечісліть додаткові витрати?");
+
+    appData.deposit = confirm("Чи є у вас кредит у банку?");
+    do {
+      appData.addExpenses = prompt("Перечісліть додаткові витрати?");
+    } while (isString(appData.addExpenses));
     appData.addExpenses.toLowerCase().split(" , ");
+    console.log(appData.addExpenses.toString());
+
+    for (let i = 0; i < 2; i++) {
+      let itemExpenses, cashExpenses;
+      do {
+        itemExpenses = prompt(
+          "Введіть обов'явозкову статтю витрат?",
+          "Курси програмування"
+        );
+      } while (isString(itemExpenses));
+
+      do {
+        cashExpenses = prompt("Скільки це буде коштувати?", 2500);
+      } while (!isNumber(cashExpenses));
+
+      appData.expenses[itemExpenses] = cashExpenses;
+    }
   },
   getExpensesMonth: function () {
     // Функція повертає суму місячних витрат
@@ -48,12 +80,12 @@ let appData = {
     if (!appData.budget) {
       appData.budget = 0;
     }
-    appData.budgetMonth = money - appData.expensesMonth;
-    appData.budgetDay = appData.budgetMonth / 30;
+    appData.budgetMonth = appData.budget - appData.expensesMonth;
+    appData.budgetDay = Math.floor(appData.budgetMonth / 30);
   },
-  getTargetMonth: function (myMission, budgetMonths) {
+  getTargetMonth: function () {
     //Функція повертай період за скільки будуть накопичені гроші
-    return Math.ceil(myMission / budgetMonths);
+    return Math.ceil(appData.mission / appData.budgetMonth);
   },
   getStatusIncome: function () {
     // Функція вираховує,який рівень доходу
@@ -66,6 +98,19 @@ let appData = {
     } else if (appData.budgetDay < 0) {
       return "Щось пішло не так";
     }
+  },
+  getInfoDeposit: function () {
+    if (appData.deposit) {
+      do {
+        appData.percentDeposit = prompt("Який річний депозит?", "10");
+      } while (!isNumber(appData.percentDeposit));
+      do {
+        appData.moneyDeposit = prompt("Яка сума закладена?", 1000);
+      } while (!isNumber(appData.moneyDeposit));
+    }
+  },
+  calcSafedMoney: function () {
+    return appData.budgetMonth * appData.period;
   },
 };
 appData.asking();
