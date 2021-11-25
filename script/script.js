@@ -331,4 +331,66 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
   inputEnter();
+
+  // Calculator
+  const calc = (price = 100) => {
+    const calcBlock = document.querySelector(".calc-block"),
+      calcType = document.querySelector(".calc-type"),
+      calcSquare = document.querySelector(".calc-square"),
+      calcCount = document.querySelector(".calc-count"),
+      calcDay = document.querySelector(".calc-day"),
+      totalAmount = document.getElementById("total");
+
+    const animate = (obj, start, end, duration) => {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) {
+          startTimestamp = timestamp;
+        }
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        obj.innerHTML = Math.floor(progress * (end - start) + start);
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        }
+      };
+      window.requestAnimationFrame(step);
+    };
+
+    const countSum = () => {
+      let total = 0,
+        countValue = 1,
+        countDay = 1;
+
+      const typeValue = +calcType.options[calcType.selectedIndex].value,
+        squareValue = +calcSquare.value;
+
+      if (calcCount.value > 1) {
+        countValue += (calcCount.value - 1) / 10;
+      }
+      if (calcDay.value && calcDay.value < 5) {
+        countDay *= 2;
+      } else if (calcDay.value && calcDay.value < 10) {
+        countDay *= 1.5;
+      }
+
+      if (calcType.value && calcSquare.value) {
+        total = price * typeValue * squareValue * countValue * countDay;
+        animate(totalAmount, 0, total, 5000);
+      }
+    };
+
+    calcBlock.addEventListener("change", (event) => {
+      const target = event.target;
+      if (
+        target.matches(".calc-type") ||
+        target.matches(".calc-square") ||
+        target.matches(".calc-count") ||
+        target.matches(".calc-day")
+      ) {
+        countSum();
+      }
+    });
+  };
+
+  calc(100);
 });
