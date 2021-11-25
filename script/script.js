@@ -124,7 +124,7 @@ window.addEventListener("DOMContentLoaded", () => {
           let opacityInterval;
           const opacityAnimate = function () {
             opacityInterval = requestAnimationFrame(opacityAnimate);
-            top += 1.5;
+            top += 2;
             if (top < 11) {
               popUpContent.style.top = top + "%";
             } else if (top >= 10) {
@@ -144,7 +144,7 @@ window.addEventListener("DOMContentLoaded", () => {
         top = 10;
         const opacityAnimate = function () {
           opacityInterval = requestAnimationFrame(opacityAnimate);
-          top -= 1.5;
+          top -= 2;
           if (top >= -100) {
             popUpContent.style.top = top + "%";
           } else {
@@ -294,4 +294,41 @@ window.addEventListener("DOMContentLoaded", () => {
     startSlide(1500);
   };
   slider();
+
+  // Our team change image
+  const changeImage = () => {
+    const commandImages = document.querySelectorAll(".command__photo");
+    commandImages.forEach((image) => {
+      image.addEventListener("mouseenter", (event) => {
+        if (event.target === image) {
+          if (image === event.target) {
+            const src = event.target.src;
+            event.target.src = event.target.dataset.img;
+            event.target.dataset.img = src;
+          }
+        }
+      });
+      image.addEventListener("mouseleave", (event) => {
+        if (event.target === image) {
+          if (image === event.target) {
+            const src = event.target.src;
+            event.target.src = event.target.dataset.img;
+            event.target.dataset.img = src;
+          }
+        }
+      });
+    });
+  };
+  changeImage();
+
+  // Block enter letters
+  const inputEnter = () => {
+    const calcBlock = document.querySelector(".calc-block");
+    calcBlock.addEventListener("input", (event) => {
+      if (event.target.tagName === "INPUT") {
+        event.target.value = event.target.value.replace(/\D/g, "");
+      }
+    });
+  };
+  inputEnter();
 });
