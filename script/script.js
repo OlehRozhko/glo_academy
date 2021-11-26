@@ -1,3 +1,6 @@
+/* eslint-disable space-before-function-paren */
+/* eslint-disable arrow-parens */
+/* eslint-disable indent */
 /* eslint-disable no-cond-assign */
 /* eslint-disable no-plusplus */
 /* eslint-disable prefer-destructuring */
@@ -83,7 +86,7 @@ window.addEventListener("DOMContentLoaded", () => {
     IdInterval = setInterval(updateClock, 1000);
   }
 
-  counterTime("26 november 2021");
+  counterTime("30 november 2021");
 
   // Menu
   const toggleMenu = () => {
