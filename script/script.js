@@ -396,4 +396,92 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
   calc(100);
+
+  // send-ajax-form
+
+  const sendForm = () => {
+    const errorMessage = "Щось пішло не так...",
+      loadMessage = "Завантаження...",
+      successMessage = "Дякуємо! Ми скоро з вами звяжемося";
+
+    const postData = (body, outputData, errorData) => {
+      const request = new XMLHttpRequest();
+      request.addEventListener("readystatechange", () => {
+        if (request.readyState !== 4) {
+          return;
+        }
+        if (request.status === 200) {
+          outputData();
+        } else {
+          errorData(request.status);
+        }
+      });
+      request.open("POST", "./server.php");
+      request.setRequestHeader("Content-Type", "application/json");
+
+      request.send(JSON.stringify(body));
+    };
+
+    const clearInput = (idForm) => {
+      const form = document.getElementById(idForm);
+      [...form.elements]
+        .filter(
+          (item) =>
+            item.tagName.toLowerCase() !== "button" && item.type !== "button"
+        )
+        .forEach((item) => (item.value = ""));
+    };
+
+    const isValid = (event) => {
+      const target = event.target;
+      if (target.matches(".form-phone")) {
+        target.value = target.value.replace(/[^+\d]/g, "");
+      }
+      if (target.name === "user_name") {
+        target.value = target.value.replace(/[^а-я]/gi, "");
+      }
+      if (target.matches(".mess")) {
+        target.value = target.value.replace(/[^а-я ,.]/gi, "");
+      }
+    };
+
+    const processingForm = (idForm) => {
+      const form = document.getElementById(idForm);
+
+      const statusMessage = document.createElement("div");
+      statusMessage.style.cssText = "font-size: 2rem; color: #fff";
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        statusMessage.textContent = loadMessage;
+        form.appendChild(statusMessage);
+        const formData = new FormData(form);
+        let body = {};
+
+        // for (let val of formData.entries()) {
+        //   body[val[0]] = val[1];
+        // }
+        formData.forEach((value, key) => {
+          body[key] = value;
+        });
+        postData(
+          body,
+          () => {
+            statusMessage.textContent = successMessage;
+            form.value = "";
+            clearInput(idForm);
+          },
+          (error) => {
+            statusMessage.textContent = errorMessage;
+            console.error(error);
+          }
+        );
+      });
+      form.addEventListener("input", isValid);
+    };
+    processingForm("form1");
+    processingForm("form2");
+    processingForm("form3");
+  };
+  sendForm();
 });

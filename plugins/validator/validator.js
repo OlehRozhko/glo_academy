@@ -103,14 +103,11 @@ class Validator {
   }
 
   setPattern() {
-    if (!this.pattern.name) {
-      this.pattern.name = /\w+/;
+    if (!this.pattern.phone) {
+      this.pattern.phone = /^\+?[78]([-()]*\d){10}$/;
     }
     if (!this.pattern.email) {
-      this.pattern.email = /^\w+\.?\w+@\w+\.\w{2,}$/;
-    }
-    if (!this.pattern.phone) {
-      this.pattern.phone = /^\+?[380||0]\d{9}/;
+      this.pattern.email = /^\w+@\w+\.\w{2,}$/;
     }
   }
 }
